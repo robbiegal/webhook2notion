@@ -41,6 +41,30 @@ def createReceipt(token, collectionURL, product, content, url, date):
     row.url = url
     row.date = date
 
+def createCalendarEvent(token, collectionURL, description, event_begins, event_ends, location, summary, duration_mins, event_begins_pretty):
+    # notion
+    client = NotionClient(token)
+    cv = client.get_collection_view(collectionURL)
+    row = cv.collection.add_row()
+    row.description = description
+    row.event_begins = event_begins
+    row.event_ends = event_ends
+    row.location = location
+    row.summary = summary
+    row.duration_mins = duration_mins
+    row.event_begins_pretty = event_begins_pretty
+
+
+def createEvent(token, collectionURL, product, content, url, date):
+    # notion
+    client = NotionClient(token)
+    cv = client.get_collection_view(collectionURL)
+    row = cv.collection.add_row()
+    row.product = product
+    row.content = content
+    row.url = url
+    row.date = date
+
 
 def createEmail(token, collectionURL, sender, subject, message_url):
     # notion
@@ -80,8 +104,22 @@ def gmailReceipt():
     date = request.args.get('date')
     token_v2 = os.environ.get("TOKEN")
     url = os.environ.get("URL")
-    createReceipt(token_v2, url, product, content, message_url, date)
+    createCalendarEvent(token_v2, url, product, content, message_url, date)
     return f'added {product} receipt to Notion'
+
+@app.route('/import_calendar', methods=['GET'])
+def CalendarImport():
+    description = request.args.get('description')
+    event_begins = request.args.get('event_begins')
+    event_ends = request.args.get('event_ends')
+    location = request.args.get('location')
+    summary = request.args.get('summary')
+    duration_mins = request.args.get('duration_mins')
+    event_begins_pretty = request.args.get('event_begins_pretty')
+    token_v2 = os.environ.get("TOKEN")
+    url = os.environ.get("URL")
+    createCalendarEvent(token, collectionURL, description, event_begins, event_ends, location, summary, duration_mins, event_begins_pretty)
+    return f'added {summary} event to Notion'
 
 
 @app.route('/createemail', methods=['GET'])
