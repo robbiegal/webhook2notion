@@ -5,6 +5,7 @@ from flask import request
 
 app = Flask(__name__)
 
+
 def trackWeather(TOKEN, URL, weather):
     # notion
     client = NotionClient(TOKEN)
@@ -119,8 +120,8 @@ def CalendarImport():
     duration_mins = request.args.get('duration_mins')
     event_begins_pretty = request.args.get('event_begins_pretty')
     TOKEN_v2 = os.environ.get("TOKEN")
-    url = os.environ.get("URL")
-    createCalendarEvent(TOKEN, collectionURL, description, event_begins, event_ends, location, summary, duration_mins, event_begins_pretty)
+    collectionURL = os.environ.get("collectionURL")
+    createCalendarEvent(TOKEN_v2, collectionURL, description, event_begins, event_ends, location, summary, duration_mins, event_begins_pretty)
     print("Finished CalendarImport for event"+ summary)
     return f'added {summary} event to Notion'
 
@@ -145,6 +146,7 @@ def getWeather():
 
 
 if __name__ == '__main__':
+    TOKEN_v2 = os.environ.get("TOKEN")
     app.debug = True
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
