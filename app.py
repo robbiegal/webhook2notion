@@ -3,7 +3,7 @@ import os
 from notion.client import NotionClient
 from flask import Flask
 from flask import request
-
+import sys
 
 app = Flask(__name__)
 
@@ -43,6 +43,7 @@ def createReceipt(token, collectionURL, product, content, url, date):
 
 def createCalendarEvent(token, collectionURL, description, event_begins, event_ends, location, summary, duration_mins, event_begins_pretty):
     # notion
+    print("Entered createCalendarEvent for "+summary )
     client = NotionClient(token)
     cv = client.get_collection_view(collectionURL)
     row = cv.collection.add_row()
@@ -53,6 +54,8 @@ def createCalendarEvent(token, collectionURL, description, event_begins, event_e
     row.summary = summary
     row.duration_mins = duration_mins
     row.event_begins_pretty = event_begins_pretty
+    print("Finished createCalendarEvent for "+summary )
+
 
 
 def createEvent(token, collectionURL, product, content, url, date):
@@ -109,6 +112,7 @@ def gmailReceipt():
 
 @app.route('/import_calendar', methods=['GET'])
 def CalendarImport():
+    print("Entered CalendarImport")
     description = request.args.get('description')
     event_begins = request.args.get('event_begins')
     event_ends = request.args.get('event_ends')
@@ -119,6 +123,7 @@ def CalendarImport():
     token_v2 = os.environ.get("TOKEN")
     url = os.environ.get("URL")
     createCalendarEvent(token, collectionURL, description, event_begins, event_ends, location, summary, duration_mins, event_begins_pretty)
+    print("Finished CalendarImport for event"+ summary)
     return f'added {summary} event to Notion'
 
 
