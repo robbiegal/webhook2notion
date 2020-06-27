@@ -7,15 +7,15 @@ import sys
 
 app = Flask(__name__)
 
-def trackWeather(token, URL, weather):
+def trackWeather(TOKEN, URL, weather):
     # notion
-    client = NotionClient(token)
+    client = NotionClient(TOKEN)
     block = client.get_block(URL)
     block.title = weather
 
-def createTweet(token, collectionURL, tweet, author, followers):
+def createTweet(TOKEN, collectionURL, tweet, author, followers):
     # notion
-    client = NotionClient(token)
+    client = NotionClient(TOKEN)
     cv = client.get_collection_view(collectionURL)
     row = cv.collection.add_row()
     row.tweet = tweet
@@ -23,17 +23,17 @@ def createTweet(token, collectionURL, tweet, author, followers):
     row.followers = followers
 
 
-def createTask(token, collectionURL, content):
+def createTask(TOKEN, collectionURL, content):
     # notion
-    client = NotionClient(token)
+    client = NotionClient(TOKEN)
     cv = client.get_collection_view(collectionURL)
     row = cv.collection.add_row()
     row.task = content
 
 
-def createReceipt(token, collectionURL, product, content, url, date):
+def createReceipt(TOKEN, collectionURL, product, content, url, date):
     # notion
-    client = NotionClient(token)
+    client = NotionClient(TOKEN)
     cv = client.get_collection_view(collectionURL)
     row = cv.collection.add_row()
     row.product = product
@@ -41,10 +41,10 @@ def createReceipt(token, collectionURL, product, content, url, date):
     row.url = url
     row.date = date
 
-def createCalendarEvent(token, collectionURL, description, event_begins, event_ends, location, summary, duration_mins, event_begins_pretty):
+def createCalendarEvent(TOKEN, collectionURL, description, event_begins, event_ends, location, summary, duration_mins, event_begins_pretty):
     # notion
     print("Entered createCalendarEvent for "+summary )
-    client = NotionClient(token)
+    client = NotionClient(TOKEN)
     cv = client.get_collection_view(collectionURL)
     row = cv.collection.add_row()
     row.description = description
@@ -58,9 +58,9 @@ def createCalendarEvent(token, collectionURL, description, event_begins, event_e
 
 
 
-def createEvent(token, collectionURL, product, content, url, date):
+def createEvent(TOKEN, collectionURL, product, content, url, date):
     # notion
-    client = NotionClient(token)
+    client = NotionClient(TOKEN)
     cv = client.get_collection_view(collectionURL)
     row = cv.collection.add_row()
     row.product = product
@@ -69,9 +69,9 @@ def createEvent(token, collectionURL, product, content, url, date):
     row.date = date
 
 
-def createEmail(token, collectionURL, sender, subject, message_url):
+def createEmail(TOKEN, collectionURL, sender, subject, message_url):
     # notion
-    client = NotionClient(token)
+    client = NotionClient(TOKEN)
     cv = client.get_collection_view(collectionURL)
     row = cv.collection.add_row()
     row.sender = sender
@@ -84,18 +84,18 @@ def twitter():
     tweet = request.args.get('tweet')
     author = request.args.get('author')
     followers = request.args.get('followers')
-    token_v2 = os.environ.get("TOKEN")
+    TOKEN_v2 = os.environ.get("TOKEN")
     url = os.environ.get("URL")
-    createTweet(token_v2, url, tweet, author, followers)
+    createTweet(TOKEN_v2, url, tweet, author, followers)
     return f'added {tweet} to Notion'
 
 
 @app.route('/tasks', methods=['GET'])
 def tasks():
     todo = request.args.get('task')
-    token_v2 = os.environ.get("TOKEN")
+    TOKEN_v2 = os.environ.get("TOKEN")
     url = os.environ.get("URL")
-    createTask(token_v2, url, todo)
+    createTask(TOKEN_v2, url, todo)
     return f'added {todo} to Notion'
 
 
@@ -105,9 +105,9 @@ def gmailReceipt():
     content = request.args.get('content')
     message_url = request.args.get('url')
     date = request.args.get('date')
-    token_v2 = os.environ.get("TOKEN")
+    TOKEN_v2 = os.environ.get("TOKEN")
     url = os.environ.get("URL")
-    createCalendarEvent(token_v2, url, product, content, message_url, date)
+    createCalendarEvent(TOKEN_v2, url, product, content, message_url, date)
     return f'added {product} receipt to Notion'
 
 @app.route('/import_calendar', methods=['GET'])
@@ -120,9 +120,9 @@ def CalendarImport():
     summary = request.args.get('summary')
     duration_mins = request.args.get('duration_mins')
     event_begins_pretty = request.args.get('event_begins_pretty')
-    token_v2 = os.environ.get("TOKEN")
+    TOKEN_v2 = os.environ.get("TOKEN")
     url = os.environ.get("URL")
-    createCalendarEvent(token, collectionURL, description, event_begins, event_ends, location, summary, duration_mins, event_begins_pretty)
+    createCalendarEvent(TOKEN, collectionURL, description, event_begins, event_ends, location, summary, duration_mins, event_begins_pretty)
     print("Finished CalendarImport for event"+ summary)
     return f'added {summary} event to Notion'
 
@@ -132,17 +132,17 @@ def gmailUrgentEmail():
     sender = request.args.get('sender')
     subject = request.args.get('subject')
     message_url = request.args.get('url')
-    token_v2 = os.environ.get("TOKEN")
+    TOKEN_v2 = os.environ.get("TOKEN")
     url = os.environ.get("URL")
-    createEmail(token_v2, url, sender, subject, message_url)
+    createEmail(TOKEN_v2, url, sender, subject, message_url)
     return f'added email from {sender} to Notion'
 
 @app.route('/getweather', methods=['GET'])
 def getWeather():
     weather = str(request.args.get('weather'))
-    token_v2 = os.environ.get("TOKEN")
+    TOKEN_v2 = os.environ.get("TOKEN")
     url = os.environ.get("URL")
-    trackWeather(token_v2, url, weather)
+    trackWeather(TOKEN_v2, url, weather)
     return f'added {weather} to Notion'
 
 
