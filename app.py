@@ -21,9 +21,9 @@ def createCalendarEvent(TOKEN, collectionURL, description, event_begins, event_e
     event_start_params=[int(i) for i in event_start_params]
     esp = event_start_params
     if len(esp) == 8:
-        event_start = datetime(esp[0],esp[1],esp[2],esp[3],esp[4],esp[5])+ timedelta(hours=-int(esp[6])
+        event_start = datetime(esp[0],esp[1],esp[2],esp[3],esp[4],esp[5])+ timedelta(hours=-int(esp[6]))
     else:
-        event_start = datetime(esp[0],esp[1],esp[2])+ timedelta(hours=-int(esp[6])
+        event_start = datetime(esp[0],esp[1],esp[2])+ timedelta(hours=-int(esp[6]))
     row.event_begins_timestamp = int(event_start.timestamp()) * 1000
     
     #handle end time:
@@ -31,9 +31,9 @@ def createCalendarEvent(TOKEN, collectionURL, description, event_begins, event_e
     event_end_params=[int(i) for i in event_end_params]
     eep = event_end_params
     if len(eep) == 8:
-        event_end = datetime(eep[0],eep[1],eep[2],eep[3],eep[4],eep[5])+ timedelta(hours=-int(esp[6])
+        event_end = datetime(eep[0],eep[1],eep[2],eep[3],eep[4],eep[5])+ timedelta(hours=-int(esp[6]))
     else:
-        event_end = datetime(eep[0],eep[1],eep[2])+ timedelta(hours=9)+ timedelta(hours=-int(esp[6])
+        event_end = datetime(eep[0],eep[1],eep[2])+ timedelta(hours=9)+ timedelta(hours=-int(esp[6]))
     row.event_ends_timestamp = int(event_end.timestamp()) * 1000
     
     row.date1 = {"type": "datetime", "start_date": event_start.strftime("%Y-%m-%d"), "start_time": event_start.strftime("%H:%M"), "end_time": event_end.strftime("%H:%M") }
