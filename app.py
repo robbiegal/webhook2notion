@@ -58,10 +58,12 @@ def createCalendarEvent(TOKEN, collectionURL, description, event_begins, event_e
     if len(esp) == 8:
         event_start = datetime(esp[0],esp[1],esp[2],esp[3],esp[4],esp[5])
         
-        row.event_begins = event_start.strftime("%Y-%m-%d %H:%M")
+        #row.event_begins = event_start.strftime("%Y-%m-%d %H:%M")
+        row.event_begins = int(event_start.timestamp())
     else:
         event_start = datetime(esp[0],esp[1],esp[2])
-        row.event_begins = event_start.strftime("%Y-%m-%d")
+        #row.event_begins = event_start.strftime("%Y-%m-%d")
+        row.event_begins = int(event_start.timestamp())
     
     #handle end time:
     event_end_params = re.split('[-T:+]',event_ends)
@@ -69,10 +71,13 @@ def createCalendarEvent(TOKEN, collectionURL, description, event_begins, event_e
     eep = event_end_params
     if len(eep) == 8:
         event_end = datetime(eep[0],eep[1],eep[2],eep[3],eep[4],eep[5])
-        row.event_ends = event_end.strftime("%Y-%m-%d %H:%M")
+        #row.event_ends = event_end.strftime("%Y-%m-%d %H:%M")
+        row.event_ends = int(event_end.timestamp()*1000)
     else:
         event_end = datetime(eep[0],eep[1],eep[2])
-        row.event_ends = event_end.strftime("%Y-%m-%d")
+        #row.event_ends = event_end.strftime("%Y-%m-%d")
+        row.event_ends = int(event_end.timestamp()*1000)
+
 
 
     row.event_ends = event_ends
