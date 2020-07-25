@@ -40,7 +40,7 @@ def createCalendarEvent(TOKEN, collectionURL, description, event_begins, event_e
     #row.date2 = 
     row.location = location
     row.summary = summary
-    row.duration_mins = int(duration_mins)
+    row.duration_mins = int(duration_mins.split('.')[0])
     row.event_begins_pretty = event_begins_pretty
     print("Finished createCalendarEvent for "+summary )
 
