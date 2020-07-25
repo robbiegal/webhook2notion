@@ -18,8 +18,7 @@ def createCalendarEvent(TOKEN, collectionURL, description, event_begins, event_e
     row.Action_Item = summary
     row.Status = "Active"
     row.Priority = "Scheduled"
-    row.Note = "Location: "+location+ "Description: "+description
-    
+    row.Note =  ((("Location: "+location) if (location!=None) else "" ) + "Description: "+str(description)
     #handle start time:
     print( "Received event with timestamp:"+event_begins+'\n')
     event_start_params = re.split('[-T:+]',event_begins)
@@ -39,7 +38,6 @@ def createCalendarEvent(TOKEN, collectionURL, description, event_begins, event_e
     else:
         event_end = datetime(eep[0],eep[1],eep[2])+ timedelta(hours=9)
     row.event_ends_timestamp = int(event_end.timestamp()) * 1000
-    
     
     row.Do_Date = event_start
     
@@ -62,8 +60,6 @@ def CalendarImport():
     createCalendarEvent(TOKEN_v2, collectionURL, description, event_begins, event_ends, location, summary, duration_mins, event_begins_pretty,id)
     print("Finished CalendarImport for event"+ summary)
     return f'added {summary} event to Notion'
-
-
 
 if __name__ == '__main__':
     TOKEN_v2 = os.environ.get("TOKEN")
