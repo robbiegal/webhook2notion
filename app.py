@@ -2,6 +2,8 @@ import os
 from notion.client import NotionClient
 from flask import Flask
 from flask import request
+import re
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -48,7 +50,28 @@ def createCalendarEvent(TOKEN, collectionURL, description, event_begins, event_e
     row = cv.collection.add_row()
     row.id = id
     row.description = description
-    row.event_begins = event_begins
+    
+    #handle start time:
+    event_start_params = re.split('[-T:+]',event_begins)
+    esp = event_start_params
+    if len(esp) == 8:
+        event_start = datetime(esp[0],esp[1],esp[2],esp[3],esp[4],esp[5])
+        row.event_begins = event_start.strftime("%Y-%m-%d %H:%M")
+    else:
+        event_start = datetime(esp[0],esp[1],esp[2])
+        row.event_begins = event_start.strftime("%Y-%m-%d")
+    
+    #handle end time:
+    event_end_params = re.split('[-T:+]',event_ends)
+    eep = event_end_params
+    if len(eep) == 8:
+        event_end = datetime(eep[0],eep[1],eep[2],eep[3],eep[4],eep[5])
+        row.event_ends = event_end.strftime("%Y-%m-%d %H:%M")
+    else:
+        event_end = datetime(eep[0],eep[1],eep[2])
+        row.event_ends = event_end.strftime("%Y-%m-%d")
+
+
     row.event_ends = event_ends
     row.location = location
     row.summary = summary
@@ -114,7 +137,7 @@ def createCalendarEvent(TOKEN, collectionURL, description, event_begins, event_e
 def CalendarImport():
     print("Entered CalendarImport")
     description = request.args.get('description')
-    event_begins = request.args.get('event_begins')
+    event_begins = request.args.get('event_begins')   # Returs datetime in the following format: 2020-06-27T16:54:19+03:00
     event_ends = request.args.get('event_ends')
     location = request.args.get('location')
     summary = request.args.get('summary')
