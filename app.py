@@ -28,17 +28,7 @@ def createCalendarEvent(TOKEN, collectionURL, description, event_begins, event_e
         event_start = datetime(esp[0],esp[1],esp[2],esp[3],esp[4],esp[5])
     else:
         event_start = datetime(esp[0],esp[1],esp[2])
-    
-    #handle end time:
-    event_end_params = re.split('[-T:+]',event_ends)
-    event_end_params=[int(i) for i in event_end_params]
-    eep = event_end_params
-    if len(eep) == 8:
-        event_end = datetime(eep[0],eep[1],eep[2],eep[3],eep[4],eep[5])
-    else:
-        event_end = datetime(eep[0],eep[1],eep[2])+ timedelta(hours=9)
-    row.event_ends_timestamp = int(event_end.timestamp()) * 1000
-    
+
     row.Do_Date = event_start
     
     print("Finished createCalendarEvent for "+summary )
