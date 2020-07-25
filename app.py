@@ -36,8 +36,10 @@ def createCalendarEvent(TOKEN, collectionURL, description, event_begins, event_e
         event_end = datetime(eep[0],eep[1],eep[2])+ timedelta(hours=9)+ timedelta(hours=-int(esp[6]))
     row.event_ends_timestamp = int(event_end.timestamp()) * 1000
     
-    row.date1 = {"type": "datetime", "start_date": event_start.strftime("%Y-%m-%d"), "start_time": event_start.strftime("%H:%M"), "end_time": event_end.strftime("%H:%M") }
-    #row.date2 = 
+    row.date1 = [["d",{"type": "datetime", "start_date": event_start.strftime("%Y-%m-%d"), "start_time": event_start.strftime("%H:%M"), "end_time": event_end.strftime("%H:%M") }]]
+    row.date2 = ["d",{"type": "datetime", "start_date": event_start.strftime("%Y-%m-%d"), "start_time": event_start.strftime("%H:%M"), "end_time": event_end.strftime("%H:%M") }]
+    row.date3 = {"type": "datetime", "start_date": event_start.strftime("%Y-%m-%d")}
+    row.date4 = event_start
     row.location = location
     row.summary = summary
     row.duration_mins = int(duration_mins.split('.')[0])
