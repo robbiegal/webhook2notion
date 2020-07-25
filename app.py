@@ -25,7 +25,7 @@ def createCalendarEvent(TOKEN, collectionURL, description, event_begins, event_e
     event_start_params=[int(i) for i in event_start_params]
     esp = event_start_params
     if len(esp) == 8:
-        event_start = datetime(esp[0],esp[1],esp[2],esp[3],esp[4],esp[5])
+        event_start = datetime(esp[0],esp[1],esp[2],esp[3],esp[4],esp[5]) - timedelta(hours = int(esp[6]))
     else:
         event_start = datetime(esp[0],esp[1],esp[2])
 
