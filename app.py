@@ -20,7 +20,7 @@ def createCalendarEvent(TOKEN, collectionURL, description, event_begins, event_e
     row.Priority = "Scheduled"
     row.Note =  ((("Location: "+location) if (location!=None) else "" ) + "Description: "+str(description)
     #handle start time:
-    print( "Received event with timestamp:"+event_begins+'\n')
+    print( "Received event with timestamp:"+str(event_begins)+'\n')
     event_start_params = re.split('[-T:+]',event_begins)
     event_start_params=[int(i) for i in event_start_params]
     esp = event_start_params
