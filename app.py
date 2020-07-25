@@ -53,9 +53,11 @@ def createCalendarEvent(TOKEN, collectionURL, description, event_begins, event_e
     
     #handle start time:
     event_start_params = re.split('[-T:+]',event_begins)
+    event_start_params=[int(i) for i in event_start_params]
     esp = event_start_params
     if len(esp) == 8:
         event_start = datetime(esp[0],esp[1],esp[2],esp[3],esp[4],esp[5])
+        
         row.event_begins = event_start.strftime("%Y-%m-%d %H:%M")
     else:
         event_start = datetime(esp[0],esp[1],esp[2])
@@ -63,6 +65,7 @@ def createCalendarEvent(TOKEN, collectionURL, description, event_begins, event_e
     
     #handle end time:
     event_end_params = re.split('[-T:+]',event_ends)
+    event_end_params=[int(i) for i in event_end_params]
     eep = event_end_params
     if len(eep) == 8:
         event_end = datetime(eep[0],eep[1],eep[2],eep[3],eep[4],eep[5])
