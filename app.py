@@ -4,6 +4,8 @@ from flask import Flask
 from flask import request
 import re
 from datetime import datetime, timedelta
+from dateutil.tz import gettz
+
 
 app = Flask(__name__)
 
@@ -25,7 +27,7 @@ def createCalendarEvent(TOKEN, collectionURL, description, event_begins, event_e
     event_start_params=[int(i) for i in event_start_params]
     esp = event_start_params
     if len(esp) == 8:  #In case a time was given and not only date
-        event_start = datetime(esp[0],esp[1],esp[2],esp[3],esp[4],esp[5]) #- timedelta(hours = int(esp[6]))
+        event_start = datetime(esp[0],esp[1],esp[2],esp[3],esp[4],esp[5]).replace(tzinfo=gettz("Israel")) #- timedelta(hours = int(esp[6])) 
     else: #In case only a date was provided
         event_start = datetime(esp[0],esp[1],esp[2])
 
