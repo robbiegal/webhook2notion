@@ -24,9 +24,9 @@ def createCalendarEvent(TOKEN, collectionURL, description, event_begins, event_e
     event_start_params = re.split('[-T:+]',event_begins)
     event_start_params=[int(i) for i in event_start_params]
     esp = event_start_params
-    if len(esp) == 8:
-        event_start = datetime(esp[0],esp[1],esp[2],esp[3],esp[4],esp[5]) - timedelta(hours = int(esp[6]))
-    else:
+    if len(esp) == 8:  #In case a time was given and not only date
+        event_start = datetime(esp[0],esp[1],esp[2],esp[3],esp[4],esp[5]) #- timedelta(hours = int(esp[6]))
+    else: #In case only a date was provided
         event_start = datetime(esp[0],esp[1],esp[2])
 
     row.Do_Date = event_start
@@ -38,7 +38,7 @@ def createCalendarEvent(TOKEN, collectionURL, description, event_begins, event_e
 def CalendarImport():
     print("Entered CalendarImport")
     description = request.args.get('description')
-    event_begins = request.args.get('event_begins')   # Returns datetime in the following format: 2020-06-27T16:54:19+03:00
+    event_begins = request.args.get('event_begins')   # Returns datetime in the following format: 2020-06-27T16:54:19+03:00 or 2020-06-27 in case only date is provided
     event_ends = request.args.get('event_ends')
     location = request.args.get('location')
     summary = request.args.get('summary')
